@@ -1,0 +1,27 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+require_once __DIR__ . '/../vendor/autoload.php';
+
+use Symfony\Component\Dotenv\Dotenv;
+
+// Create the Application
+$application = new Symfony\Component\Console\Application;
+
+$dotenv = new Dotenv();
+
+if (!is_readable(__DIR__.'/../.env')) {
+    throw new \RuntimeException('Please create a .env file in the root directory of this project');
+}
+
+// loads .env, .env.local, and .env.$APP_ENV.local or .env.$APP_ENV
+$dotenv->loadEnv(__DIR__.'/../.env');
+
+// Register all Commands
+$application->add(new App\Command\CalculateLegacyCommand());
+$application->add(new App\Command\CalculateCommand());
+
+// Run it
+$application->run();
