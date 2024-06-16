@@ -4,6 +4,7 @@ declare(strict_types=0);
 
 namespace App\Command;
 
+use http\Exception\RuntimeException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -22,7 +23,7 @@ final class CalculateLegacyCommand extends Command
     }
 
     /**
-     * Here all logic happens
+     * Here all logic happens.
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
@@ -31,13 +32,15 @@ final class CalculateLegacyCommand extends Command
             throw new \InvalidArgumentException('File path must be a string');
         }
 
-        if (is_file($file) === false) {
+        if (false === is_file($file)) {
             throw new \InvalidArgumentException('File does not  exist');
         }
 
         foreach (explode("\n", file_get_contents($file)) as $row) {
-            if (empty($row)) break;
-            $p = explode(",", $row);
+            if (empty($row)) {
+                break;
+            }
+            $p = explode(',', $row);
             $p2 = explode(':', $p[0]);
             $value[0] = trim($p2[1], '"');
             $p2 = explode(':', $p[1]);
@@ -46,28 +49,38 @@ final class CalculateLegacyCommand extends Command
             $value[2] = trim($p2[1], '"}');
 
             $binResults = file_get_contents(rtrim($_SERVER['API_LOOKUP_BINLIST_URL'], '/') . '/' . $value[0]);
-            if (!$binResults)
-                die('error!');
+            if (!$binResults) {
+                throw new RuntimeException('error!');
+            }
             $r = json_decode($binResults, false);
             $isEu = $this->isEu($r->country->alpha2);
 
-            $rate = @json_decode(file_get_contents(rtrim($_SERVER['API_EXCHANGERATESAPI_URL'], '/').'/latest?access_key='.$_SERVER['API_EXCHANGERATESAPI_KEY']), true, 512, JSON_THROW_ON_ERROR)['rates'][$value[2]];
+            $rate = @json_decode(
+                file_get_contents(
+                    rtrim($_SERVER['API_EXCHANGERATESAPI_URL'], '/')
+                    . '/latest?access_key=' . $_SERVER['API_EXCHANGERATESAPI_KEY']
+                ),
+                true,
+                512,
+                JSON_THROW_ON_ERROR
+            )['rates'][$value[2]];
 
-            if ($value[2] == 'EUR' or $rate == 0) {
+            if ('EUR' == $value[2] or 0 == $rate) {
                 $amntFixed = $value[1];
             }
-            if ($value[2] != 'EUR' or $rate > 0) {
+            if ('EUR' != $value[2] or $rate > 0) {
                 $amntFixed = $value[1] / $rate;
             }
 
-            echo $amntFixed * ($isEu == 'yes' ? 0.01 : 0.02);
-            print "\n";
+            /* @phpstan-ignore variable.undefined */
+            echo $amntFixed * ('yes' == $isEu ? 0.01 : 0.02);
+            echo "\n";
         }
 
         return self::SUCCESS;
     }
 
-    private function isEu($c)
+    private function isEu(?string $c): string
     {
         $result = false;
         switch ($c) {
@@ -99,6 +112,7 @@ final class CalculateLegacyCommand extends Command
             case 'SI':
             case 'SK':
                 $result = 'yes';
+
                 return $result;
             default:
                 $result = 'no';

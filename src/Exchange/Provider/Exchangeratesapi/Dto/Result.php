@@ -7,10 +7,6 @@ namespace App\Exchange\Provider\Exchangeratesapi\Dto;
 final class Result
 {
     /**
-     * @param bool $success
-     * @param int|null $timestamp
-     * @param string|null $base
-     * @param string|null $date
      * @param array<string, mixed> $rates
      */
     public function __construct(
@@ -19,11 +15,11 @@ final class Result
         public readonly ?string $base,
         public readonly ?string $date,
         public readonly array $rates,
-    ) {}
+    ) {
+    }
 
     /**
      * @param array<string, mixed> $arr
-     * @return self
      */
     public static function fromArray(array $arr): self
     {

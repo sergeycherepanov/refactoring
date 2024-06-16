@@ -8,7 +8,9 @@ use App\Lookup\Dto\LookupResult;
 
 class Lookup
 {
-    public function __construct(public readonly ProviderInterface $provider) {}
+    public function __construct(public readonly ProviderInterface $provider)
+    {
+    }
 
     public function lookup(int $bin): LookupResult
     {

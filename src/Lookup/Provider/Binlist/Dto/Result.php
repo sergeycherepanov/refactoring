@@ -13,11 +13,11 @@ final class Result
         public readonly ?string $brand,
         public readonly ResultCountry $country,
         public readonly ResultBank $bank,
-    ) {}
+    ) {
+    }
 
     /**
      * @param array<string, mixed> $arr
-     * @return self
      */
     public static function fromArray(array $arr): self
     {
@@ -26,8 +26,8 @@ final class Result
             $arr['scheme'] ?? null,
             $arr['type'] ?? null,
             $arr['brand'] ?? null,
-                ResultCountry::fromArray($arr['country'] ?? []),
-                ResultBank::fromArray($arr['bank'] ?? []),
+            ResultCountry::fromArray($arr['country'] ?? []),
+            ResultBank::fromArray($arr['bank'] ?? []),
         );
     }
 }

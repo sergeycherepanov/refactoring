@@ -13,7 +13,6 @@ use GuzzleHttp\HandlerStack;
 use Kevinrob\GuzzleCache\CacheMiddleware;
 use Kevinrob\GuzzleCache\Storage\FlysystemStorage;
 use Kevinrob\GuzzleCache\Strategy\GreedyCacheStrategy;
-use Kevinrob\GuzzleCache\Strategy\PrivateCacheStrategy;
 use League\Flysystem\Local\LocalFilesystemAdapter;
 
 final class Binlist implements ProviderInterface
@@ -29,14 +28,15 @@ final class Binlist implements ProviderInterface
                     new LocalFilesystemAdapter(
                         sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'guzzle_cache_binlist'
                     ),
-                ), 3600
+                ),
+                3600
             )
         ), 'cache');
 
         $this->client = new Client([
             'base_uri' => $baseUrl,
-            'timeout'  => 10.0,
-            'handler' => $stack
+            'timeout' => 10.0,
+            'handler' => $stack,
         ]);
     }
 

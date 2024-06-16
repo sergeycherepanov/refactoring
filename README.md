@@ -29,5 +29,5 @@ new implementation
 
 ## PhpStan
 ```bash
-    php vendor/bin/phpstan analyse --level 6 src tests
+    php vendor/bin/phpstan analyse
 ```

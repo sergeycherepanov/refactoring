@@ -4,18 +4,16 @@ declare(strict_types=1);
 
 namespace App;
 
+use App\Lookup\Lookup;
 use Brick\Math\Exception\MathException;
 use Brick\Math\Exception\NumberFormatException;
 use Brick\Math\Exception\RoundingNecessaryException;
+use Brick\Math\RoundingMode;
 use Brick\Money\Context\CashContext;
 use Brick\Money\CurrencyConverter;
 use Brick\Money\Exception\CurrencyConversionException;
 use Brick\Money\Exception\UnknownCurrencyException;
 use Brick\Money\Money;
-use Brick\Math\RoundingMode;
-
-use App\Exchange\Exchange;
-use App\Lookup\Lookup;
 
 class Commission
 {
@@ -26,9 +24,6 @@ class Commission
     }
 
     /**
-     * @param Money $money
-     * @param string $toCurrency
-     * @return Money
      * @throws CurrencyConversionException
      * @throws RoundingNecessaryException
      */
@@ -42,7 +37,8 @@ class Commission
         $countryCode = $this->lookup->lookup($bin)->countryCode;
 
         return match ($countryCode) {
-            'AT', 'BE', 'BG', 'CY', 'CZ', 'DE', 'DK', 'EE', 'ES', 'FI', 'FR', 'GR', 'HR', 'HU', 'IE', 'IT', 'LT', 'LU', 'LV', 'MT', 'NL', 'PO', 'PT', 'RO', 'SE', 'SI', 'SK' => true,
+            'AT', 'BE', 'BG', 'CY', 'CZ', 'DE', 'DK', 'EE', 'ES', 'FI', 'FR', 'GR', 'HR', 'HU', 'IE', 'IT', 'LT', 'LU',
+            'LV', 'MT', 'NL', 'PO', 'PT', 'RO', 'SE', 'SI', 'SK' => true,
             default => false,
         };
     }

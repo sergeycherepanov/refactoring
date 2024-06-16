@@ -29,13 +29,13 @@ final class Exchangeratesapi implements ExchangeRateProvider
             new GreedyCacheStrategy(new VolatileRuntimeStorage(), 30)
         ), 'cache');
 
-        $stack->push(Middleware::mapRequest(static function(RequestInterface $request) use ($apiKey) {
+        $stack->push(Middleware::mapRequest(static function (RequestInterface $request) use ($apiKey) {
             return $request->withUri(Uri::withQueryValue($request->getUri(), 'access_key', $apiKey));
         }));
 
         $this->client = new Client([
             'base_uri' => $baseUrl,
-            'timeout'  => 10.0,
+            'timeout' => 10.0,
             'handler' => $stack,
         ]);
     }
@@ -44,18 +44,18 @@ final class Exchangeratesapi implements ExchangeRateProvider
      * @throws GuzzleException
      * @throws \JsonException
      */
-    private function latest(string $base = "EUR"): Result
+    private function latest(string $base = 'EUR'): Result
     {
         $response = $this->client->request('GET', 'latest', [
-            'query'  => [
+            'query' => [
                 'base' => $base,
-            ]
+            ],
         ]);
 
         $data = json_decode($response->getBody()->getContents(), true, 512, JSON_THROW_ON_ERROR);
         $result = Result::fromArray($data);
 
-        if ($result->success === false) {
+        if (false === $result->success) {
             throw new \RuntimeException('Failed to get latest exchange rates');
         }
 

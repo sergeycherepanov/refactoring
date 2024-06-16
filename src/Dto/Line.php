@@ -10,11 +10,11 @@ final class Line
         public readonly ?int $bin,
         public readonly ?int $amount,
         public readonly ?string $currency,
-    ) {}
+    ) {
+    }
 
     /**
      * @param array<string, mixed> $arr
-     * @return self
      */
     public static function fromArray(array $arr): self
     {

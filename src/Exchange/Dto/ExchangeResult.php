@@ -9,5 +9,7 @@ final class ExchangeResult
     /**
      * @param array<string, float> $rates
      */
-    public function __construct(public readonly array $rates) {}
+    public function __construct(public readonly array $rates)
+    {
+    }
 }

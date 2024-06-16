@@ -14,11 +14,11 @@ final class ResultCountry
         public readonly ?string $currency,
         public readonly ?string $latitude,
         public readonly ?string $longitude,
-    ) {}
+    ) {
+    }
 
     /**
      * @param array<string, mixed> $arr
-     * @return self
      */
     public static function fromArray(array $arr): self
     {

@@ -28,17 +28,21 @@ final class CalculateCommand extends Command
     }
 
     /**
-     * Here all logic happens
+     * Here all logic happens.
+     *
      * @throws FilesystemException
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $commission = new Commission(
-            new Lookup(new Binlist(rtrim(
-                        $_SERVER['API_LOOKUP_BINLIST_URL'], '/').'/')
+            new Lookup(
+                new Binlist(rtrim(
+                    $_SERVER['API_LOOKUP_BINLIST_URL'],
+                    '/'
+                ) . '/')
             ),
             new CurrencyConverter(new Exchangeratesapi(
-                rtrim($_SERVER['API_EXCHANGERATESAPI_URL'], '/').'/',
+                rtrim($_SERVER['API_EXCHANGERATESAPI_URL'], '/') . '/',
                 $_SERVER['API_EXCHANGERATESAPI_KEY']
             ))
         );
@@ -48,7 +52,7 @@ final class CalculateCommand extends Command
                 $lineStr = fgets($stream);
                 if (false !== $lineStr) {
                     $line = Line::fromArray(json_decode($lineStr, true, 512, JSON_THROW_ON_ERROR));
-                    if ($line->bin === null || $line->amount === null || $line->currency === null) {
+                    if (null === $line->bin || null === $line->amount || null === $line->currency) {
                         throw new \InvalidArgumentException('Invalid line: ' . $lineStr);
                     }
 

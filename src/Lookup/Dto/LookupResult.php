@@ -6,5 +6,7 @@ namespace App\Lookup\Dto;
 
 final class LookupResult
 {
-    public function __construct(public readonly string $countryCode) {}
+    public function __construct(public readonly string $countryCode)
+    {
+    }
 }

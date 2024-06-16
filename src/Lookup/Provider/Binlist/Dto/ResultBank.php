@@ -6,11 +6,12 @@ namespace App\Lookup\Provider\Binlist\Dto;
 
 final class ResultBank
 {
-    public function __construct(public readonly ?string $name) {}
+    public function __construct(public readonly ?string $name)
+    {
+    }
 
     /**
      * @param array<string, mixed> $arr
-     * @return self
      */
     public static function fromArray(array $arr): self
     {
