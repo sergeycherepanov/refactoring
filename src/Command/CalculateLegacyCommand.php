@@ -4,7 +4,6 @@ declare(strict_types=0);
 
 namespace App\Command;
 
-use http\Exception\RuntimeException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -50,7 +49,7 @@ final class CalculateLegacyCommand extends Command
 
             $binResults = file_get_contents(rtrim($_SERVER['API_LOOKUP_BINLIST_URL'], '/') . '/' . $value[0]);
             if (!$binResults) {
-                throw new RuntimeException('error!');
+                throw new \RuntimeException('error!');
             }
             $r = json_decode($binResults, false);
             $isEu = $this->isEu($r->country->alpha2);
