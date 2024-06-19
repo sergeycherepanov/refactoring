@@ -7,7 +7,7 @@ namespace App\Lookup\Provider\Binlist\Dto;
 final class Result
 {
     public function __construct(
-        public readonly ?string $number,
+        public readonly ?array $number,
         public readonly ?string $scheme,
         public readonly ?string $type,
         public readonly ?string $brand,

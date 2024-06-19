@@ -56,7 +56,7 @@ final class Exchangeratesapi implements ExchangeRateProvider
         $result = Result::fromArray($data);
 
         if (false === $result->success) {
-            throw new \RuntimeException('Failed to get latest exchange rates');
+            throw new \RuntimeException(sprintf('Failed to get latest exchange rates: %s', \json_encode($data, JSON_THROW_ON_ERROR)));
         }
 
         return $result;

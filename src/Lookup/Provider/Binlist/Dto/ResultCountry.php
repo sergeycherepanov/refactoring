@@ -12,8 +12,8 @@ final class ResultCountry
         public readonly ?string $name,
         public readonly ?string $emoji,
         public readonly ?string $currency,
-        public readonly ?string $latitude,
-        public readonly ?string $longitude,
+        public readonly ?int $latitude,
+        public readonly ?int $longitude,
     ) {
     }
 
